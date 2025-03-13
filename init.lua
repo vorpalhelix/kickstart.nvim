@@ -862,7 +862,11 @@ require('lazy').setup({
   },
 
   { 
-    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 1000,
+    'vorpalhelix/lightline', name ="lightline", lazy = false, priority = 1000
+  },
+
+  { 
+    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 999, 
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       vim.cmd.colorscheme 'moonfly'
@@ -973,7 +977,6 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  require 'kickstart.plugins.lightline',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
