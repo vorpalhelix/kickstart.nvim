@@ -870,7 +870,7 @@ require('lazy').setup({
   
 
   { 
-    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 900, 
+    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 1100, 
     config = function()
       vim.cmd.colorscheme 'moonfly'
     end,
