@@ -860,13 +860,6 @@ require('lazy').setup({
       }
     end,
   },
-
-  { 
-    'vorpalhelix/lightline', name ="lightline", lazy = false, priority = 1000,
-    config = function()
-      vim.g.lightline = { colorscheme = 'moonfly' }
-    end,
-  },
   
 
   { 
@@ -979,7 +972,8 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
+  require 'kickstart.plugins.lightline',
+  
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
