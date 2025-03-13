@@ -865,11 +865,13 @@ require('lazy').setup({
     'vorpalhelix/lightline', name ="lightline", lazy = false, priority = 1000,
     config = function()
       vim.g.lightline = { colorscheme = 'moonfly' }
+      vim.cmd('colorscheme moonfly')
     end,
   },
+  
 
   { 
-    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 999, 
+    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 900, 
     config = function()
       vim.cmd.colorscheme 'moonfly'
     end,
