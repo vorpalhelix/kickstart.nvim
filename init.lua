@@ -870,7 +870,7 @@ require('lazy').setup({
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       vim.cmd.colorscheme 'moonfly',
-      let g:lightline = { 'colorscheme': 'moonfly' }
+      vim.g.lightline = { colorscheme = 'moonfly' }
     end,
   },
 
