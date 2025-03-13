@@ -862,15 +862,16 @@ require('lazy').setup({
   },
 
   { 
-    'vorpalhelix/lightline', name ="lightline", lazy = false, priority = 1000
+    'vorpalhelix/lightline', name ="lightline", lazy = false, priority = 1000,
+    config = function()
+      vim.g.lightline = { colorscheme = 'moonfly' }
+    end,
   },
 
   { 
     'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 999, 
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
       vim.cmd.colorscheme 'moonfly',
-      vim.g.lightline = { colorscheme = 'moonfly' }
     end,
   },
 
