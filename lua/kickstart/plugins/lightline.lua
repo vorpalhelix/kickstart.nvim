@@ -1,0 +1,5 @@
+return {
+  { 
+    'vorpalhelix/lightline.nvim',
+  },
+}
