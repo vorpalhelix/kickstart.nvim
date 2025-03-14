@@ -23,6 +23,7 @@ return {
     },
   },
   config = function()
+    require('neo-tree'.setup({}))
     vim.keymap.set('n', '|', ':Neotree toggle reveal left reveal_force_cwd<CR>', { desc = 'Toggle filebrowser on left' })
     vim.keymap.set('n', '<leader>rf', ':Neotree float reveal_file=<cfile> reveal_force_cwd<CR>', { desc = '[R]eveal [F]ile' })
     vim.keymap.set('n', '<leader>bf', ':Neotree toggle show buffers right<CR>', { desc = 'Toggle [B]u[F]fers]' })
