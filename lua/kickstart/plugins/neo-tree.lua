@@ -22,4 +22,7 @@ return {
       },
     },
   },
-}
+  config = function()
+    vim.keymap.set('n', '<leader>ff', Neotree.toggle.current.reveal_force_cwd<cr>, { desc = '[F]ind in [F]iles' })
+  end
+}1
