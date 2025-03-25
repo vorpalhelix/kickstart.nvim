@@ -749,7 +749,7 @@ require('lazy').setup({
 
   { -- Autoformat
     'stevearc/conform.nvim',
-    enable = true,
+    enable = false,
     optional = true,
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
