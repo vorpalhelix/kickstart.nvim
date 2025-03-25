@@ -663,7 +663,26 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
+        biome = {
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+                      on_attach = function(client, bufnr)
+                      -- Enable formatting
+                      client.server_capabilities.documentFormattingProvider = true
+                      client.server_capabilities.documentRangeFormattingProvider = true
+
+                      -- Keybinding for formatting
+                      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+
+                      -- Autoformat on save
+                      vim.api.nvim_create_autocmd('BufWritePre', {
+                          buffer = bufnr,
+                          callback = function()
+                          vim.lsp.buf.format()
+                          end,
+                      })
+                      end
+        },
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -730,6 +749,8 @@ require('lazy').setup({
 
   { -- Autoformat
     'stevearc/conform.nvim',
+    enable = true,
+    optional = true,
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
@@ -762,6 +783,17 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        ['javascript'] = { 'biome' },
+        ['javascriptreact'] = { 'biome' },
+        ['typescript'] = { 'biome' },
+        ['typescriptreact'] = { 'biome' },
+        ['json'] = { 'biome' },
+        ['jsonc'] = { 'biome' },
+        ['vue'] = { 'biome' },
+        ['css'] = { 'biome' },
+        ['scss'] = { 'biome' },
+        ['less'] = { 'biome' },
+        ['html'] = { 'biome' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -894,7 +926,7 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 1100, 
+    'bluz71/vim-moonfly-colors', name = "moonfly", lazy = false, priority = 1100,
     config = function()
       vim.cmd.colorscheme 'moonfly'
     end,
@@ -906,6 +938,15 @@ require('lazy').setup({
     config = function()
       require('lualine').setup()
     end,
+  },
+
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+    opts = {
+      rocks = { "fzy", "pathlib.nvim ~> 1.0" }, -- specifies a list of rocks to install
+      -- luarocks_build_args = { "--with-lua=/my/path" }, -- extra options to pass to luarocks's configuration script
+    },
   },
 
   -- Highlight todo, notes, etc in comments
