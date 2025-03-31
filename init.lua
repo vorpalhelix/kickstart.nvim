@@ -102,7 +102,9 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
+
+vim.opt.spell = false
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -127,6 +129,10 @@ vim.opt.undofile = true
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+-- Set tabstop and shiftwidth
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
@@ -233,7 +239,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  --'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -664,6 +670,25 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
+        ast_grep = {
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+                      on_attach = function(client, bufnr)
+                      -- Enable formatting
+                      client.server_capabilities.documentFormattingProvider = true
+                      client.server_capabilities.documentRangeFormattingProvider = true
+
+                      -- Keybinding for formatting
+                      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+
+                      -- Autoformat on save
+                      vim.api.nvim_create_autocmd('BufWritePre', {
+                          buffer = bufnr,
+                          callback = function()
+                          vim.lsp.buf.format()
+                          end,
+                      })
+                      end
+        },
         biome = {
             capabilities = require('cmp_nvim_lsp').default_capabilities(),
                       on_attach = function(client, bufnr)
@@ -794,6 +819,9 @@ require('lazy').setup({
         ['scss'] = { 'biome' },
         ['less'] = { 'biome' },
         ['html'] = { 'biome' },
+        ['c'] = { 'ast_grep' },
+        ['cpp'] = { 'ast_grep' },
+        ['cs'] = { 'ast_grep' }
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
