@@ -131,8 +131,10 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Set tabstop and shiftwidth
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
@@ -700,12 +702,12 @@ require('lazy').setup({
                       vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 
                       -- Autoformat on save
-                      vim.api.nvim_create_autocmd('BufWritePre', {
-                          buffer = bufnr,
-                          callback = function()
-                          vim.lsp.buf.format()
-                          end,
-                      })
+--                       vim.api.nvim_create_autocmd('BufWritePre', {
+--                           buffer = bufnr,
+--                           callback = function()
+--                           vim.lsp.buf.format()
+--                           end,
+--                       })
                       end
         },
         -- gopls = {},
