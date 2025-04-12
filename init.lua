@@ -625,6 +625,7 @@ require('lazy').setup({
         end,
       })
 
+
       -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
@@ -1043,6 +1044,18 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    "iabdelkareem/csharp.nvim",
+    dependencies = {
+      "williamboman/mason.nvim", -- Required, automatically installs omnisharp
+      "mfussenegger/nvim-dap",
+      "Tastyep/structlog.nvim", -- Optional, but highly recommended for debugging
+    },
+    config = function ()
+    require("mason").setup() -- Mason setup must run before csharp, only if you want to use omnisharp
+    require("csharp").setup()
+    end
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
