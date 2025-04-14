@@ -202,6 +202,7 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -534,6 +535,9 @@ require('lazy').setup({
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- [F]ormat Buffer
+          map('<leader>f', function() vim.lsp.buf.format() end, '[F]ormat buffer')
+
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
@@ -678,18 +682,19 @@ require('lazy').setup({
                       on_attach = function(client, bufnr)
                       -- Enable formatting
                       client.server_capabilities.documentFormattingProvider = true
-                      client.server_capabilities.documentRangeFormattingProvider = true
 
                       -- Keybinding for formatting
-                      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+--                       vim.keymap.set('n', '<leader>fx', function()
+--                         vim.lsp.buf.format()
+--                         end, { buffer = bufnr, noremap = true, silent = true, desc = '[F]ormat buffer' })
 
                       -- Autoformat on save
-                      vim.api.nvim_create_autocmd('BufWritePre', {
-                          buffer = bufnr,
-                          callback = function()
-                          vim.lsp.buf.format()
-                          end,
-                      })
+--                       vim.api.nvim_create_autocmd('BufWritePre', {
+--                           buffer = bufnr,
+--                           callback = function()
+--                           vim.lsp.buf.format()
+--                           end,
+--                       })
                       end
         },
         biome = {
@@ -700,7 +705,7 @@ require('lazy').setup({
                       client.server_capabilities.documentRangeFormattingProvider = true
 
                       -- Keybinding for formatting
-                      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+--                       vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>fx', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 
                       -- Autoformat on save
 --                       vim.api.nvim_create_autocmd('BufWritePre', {
@@ -792,7 +797,7 @@ require('lazy').setup({
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -883,6 +888,7 @@ require('lazy').setup({
             luasnip.lsp_expand(args.body)
           end,
         },
+
         completion = { completeopt = 'menu,menuone,noinsert' },
 
         -- For an understanding of why these mappings were
@@ -890,6 +896,27 @@ require('lazy').setup({
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
+            ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                    luasnip.expand_or_jump()
+                    else
+                        fallback()
+                        end
+                        end, { "i", "s" }),
+
+                        ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                            elseif luasnip.jumpable(-1) then
+                                luasnip.jump(-1)
+                                else
+                                    fallback()
+                                    end
+                                    end, { "i", "s" }),
+
+                                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
           -- Select the [n]ext item
           ['<C-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
@@ -951,6 +978,7 @@ require('lazy').setup({
       }
     end,
   },
+
 
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
@@ -1045,18 +1073,7 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
-  {
-    "iabdelkareem/csharp.nvim",
-    dependencies = {
-      "williamboman/mason.nvim", -- Required, automatically installs omnisharp
-      "mfussenegger/nvim-dap",
-      "Tastyep/structlog.nvim", -- Optional, but highly recommended for debugging
-    },
-    config = function ()
-    require("mason").setup() -- Mason setup must run before csharp, only if you want to use omnisharp
-    require("csharp").setup()
-    end
-  },
+
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
