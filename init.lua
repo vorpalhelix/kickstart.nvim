@@ -1074,6 +1074,28 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
+  {
+      'stevearc/aerial.nvim',
+      opts = {},
+      config = function()
+        require("aerial").setup({
+            -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+            on_attach = function(bufnr)
+            -- Jump forwards/backwards with '{' and '}'
+        vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+        vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+        end,
+        })
+        -- You probably also want to set a keymap to toggle aerial
+        vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+      end,
+      -- Optional dependencies
+      dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+          "nvim-tree/nvim-web-devicons"
+      },
+  },
+
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
